@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>津贴直达链接 - 快速跳转大众点评APP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header {
+            margin-bottom: 30px;
+        }
+        
+        .app-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ff9966, #ff5e62);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            box-shadow: 0 5px 15px rgba(255, 94, 98, 0.3);
+        }
+        
+        .app-icon i {
+            font-size: 40px;
+            color: white;
+        }
+        
+        h1 {
+            font-size: 26px;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            color: #7f8c8d;
+            line-height: 1.5;
+        }
+        
+        .content {
+            margin-bottom: 30px;
+        }
+        
+        .steps {
+            display: flex;
+            justify-content: space-around;
+            margin: 25px 0;
+            position: relative;
+        }
+        
+        .steps::before {
+            content: "";
+            position: absolute;
+            top: 20px;
+            left: 50px;
+            right: 50px;
+            height: 3px;
+            background: linear-gradient(to right, #ff9966, #ff5e62);
+            z-index: 1;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #ff9966;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .step-text {
+            font-size: 14px;
+            color: #2c3e50;
+            text-align: center;
+            max-width: 80px;
+        }
+        
+        .button {
+            width: 100%;
+            height: 55px;
+            background: linear-gradient(135deg, #ff9966, #ff5e62);
+            border-radius: 12px;
+            text-align: center;
+            line-height: 55px;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 25px 0 15px;
+            box-shadow: 0 8px 20px rgba(255, 94, 98, 0.3);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+        }
+        
+        .button:hover, .button:active {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(255, 94, 98, 0.4);
+        }
+        
+        .button:active {
+            transform: translateY(1px);
+        }
+        
+        .button i {
+            margin-right: 10px;
+        }
+        
+        .browser-tip {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 25px;
+            text-align: left;
+            border-left: 4px solid #ff9966;
+        }
+        
+        .browser-tip h3 {
+            color: #ff5e62;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .browser-tip h3 i {
+            margin-right: 8px;
+        }
+        
+        .browser-tip p {
+            font-size: 14px;
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+        
+        .warning {
+            background: #fff8e6;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            text-align: left;
+        }
+        
+        .warning i {
+            color: #ff9800;
+            font-size: 24px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .warning p {
+            font-size: 14px;
+            color: #7f8c8d;
+            line-height: 1.5;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            color: #95a5a6;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        
+        .animation-container {
+            position: relative;
+            height: 120px;
+            margin: 20px 0;
+        }
+        
+        .phone {
+            position: absolute;
+            width: 150px;
+            height: 260px;
+            background: #fff;
+            border-radius: 30px;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            overflow: hidden;
+            border: 8px solid #2c3e50;
+        }
+        
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ff9966, #ff5e62);
+            position: relative;
+        }
+        
+        .app-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .app-logo i {
+            font-size: 30px;
+            color: #ff5e62;
+        }
+        
+        .arrow {
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            animation: moveArrow 1.5s infinite;
+        }
+        
+        @keyframes moveArrow {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(30px); }
+        }
+        
+        .arrow i {
+            font-size: 40px;
+            color: white;
+        }
+        
+        .bounce {
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 22px;
+            }
+            
+            .button {
+                height: 50px;
+                font-size: 16px;
+            }
+            
+            .steps::before {
+                left: 30px;
+                right: 30px;
+            }
+        }
+    </style>
+    <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+    <script>LA.init({id:"KRv3eV7fs3nTW6TM",ck:"KRv3eV7fs3nTW6TM"})</script>
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="header">
+                <div class="app-icon">
+                    <i class="fas fa-store"></i>
+                </div>
+                <h1>津贴直达链接</h1>
+                <p class="subtitle">点击下方按钮，快速跳转至大众点评APP领取专属津贴</p>
+            </div>
+            
+            <div class="animation-container">
+                <div class="phone">
+                    <div class="phone-screen">
+                        <div class="app-logo">
+                            <i class="fas fa-comment-dollar"></i>
+                        </div>
+                        <div class="arrow">
+                            <i class="fas fa-long-arrow-alt-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content">
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-text">点击按钮</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-text">跳转APP</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-text">领取津贴</div>
+                    </div>
+                </div>
+                
+                <button @click="openUrl" class="button bounce">
+                    <i class="fas fa-external-link-alt"></i>立即跳转大众点评APP
+                </button>
+                
+                <div class="browser-tip" v-if="isWechat">
+                    <h3><i class="fas fa-lightbulb"></i>使用提示</h3>
+                    <p>由于微信限制，请点击右上角 <i class="fas fa-ellipsis-h"></i> 选择"在浏览器打开"，然后在浏览器中点击跳转按钮，即可快速打开大众点评APP。</p>
+                </div>
+                
+                <div class="warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>请确保您已安装最新版大众点评APP，否则可能无法正常跳转。</p>
+                </div>
+            </div>
+            
+            <div class="footer">
+                <p>本服务由大众点评提供 · 点击跳转即表示同意相关用户协议</p>
+                <p>如有问题请联系客服: 400-000-0000</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref } = Vue
+
+        createApp({
+            data() {
+                return {
+                    weixin: true,
+                    isIos: false,
+                    isWechat: false
+                }
+            },
+            created() {
+                // 检测iOS设备
+                if(/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)){
+                    this.isIos = true            
+                }
+
+                // 检测微信环境
+                if (/(MicroMessenger)/i.test(navigator.userAgent)) {
+                    this.isWechat = true
+                }
+            },
+            methods: {
+                openUrl() {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const url = urlParams.get("url") || "dianping://";
+                    
+                    if (this.isWechat) {
+                        // 在微信中显示更友好的提示
+                        this.showWechatTip();
+                        return;
+                    } 
+                
+                    // 尝试跳转
+                    window.location.href = url;
+                    
+                    // 如果跳转失败，引导用户手动打开
+                    setTimeout(() => {
+                        if (!document.hidden) {
+                            window.location.href = "https://www.dianping.com";
+                        }
+                    }, 1500);
+                },
+                
+                showWechatTip() {
+                    // 创建自定义提示
+                    const tip = document.createElement('div');
+                    tip.innerHTML = `
+                        <div style="position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); z-index:9999; display:flex; align-items:center; justify-content:center;">
+                            <div style="background:white; border-radius:15px; padding:30px; max-width:90%; text-align:center;">
+                                <h3 style="color:#ff5e62; margin-bottom:20px; display:flex; align-items:center; justify-content:center;">
+                                    <i class="fas fa-exclamation-circle" style="margin-right:10px;"></i>跳转提示
+                                </h3>
+                                <p style="margin-bottom:20px; line-height:1.6;">由于微信限制，请点击右上角 <i class="fas fa-ellipsis-h"></i> 选择"在浏览器打开"，然后在浏览器中点击跳转按钮。</p>
+                                <button onclick="this.parentElement.parentElement.remove()" style="background:#ff9966; color:white; border:none; padding:10px 25px; border-radius:8px; font-weight:bold;">我知道了</button>
+                            </div>
+                        </div>
+                    `;
+                    document.body.appendChild(tip);
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>
